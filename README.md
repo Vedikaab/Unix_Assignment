@@ -8,12 +8,10 @@
 Here is my snippet of code used for data inspection
 
 wc fang_et_al_genotypes.txt
-ls -l fang_et_al_genotypes.txt
 awk -F "\t" '{print NF; exit}' fang_et_al_genotypes.txt
 du -h fang_et_al_genotypes.txt
 
 ```
-
 By inspecting this file I learned that:
 
 1. The .txt file contains 2744038 words, 2783 lines, and 11051939 characters.
@@ -26,13 +24,16 @@ By inspecting this file I learned that:
 ```
 Here is my snippet of code used for data inspection
 
-```
+wc snp_position.txt
+awk -F "\t" '{print NF; exit}' snp_position.txt
+du -h snp_position.txt
 
+```
 By inspecting this file I learned that:
 
-1. point 1
-2. point 2
-3. point 3
+1. The .txt file contains 984 lines, 13198 words and 82763 charcters.  
+2. The .txt file contains 15 number of columns.
+3. The .txt file size is 49k. 
 
 
 ##Data Processing
@@ -48,48 +49,54 @@ awk -f transpose.awk maize_genotypes.txt > transposed_maize_genotypes.txt
 
 #!/bin/bash
 
-# Iterate through chromosome
-for i in {1..10}; do
-    # Sort the snp_position.txt file by chromosome and retain 1,3 and 4 column
-    awk -v chr="$i" '$3 == chr'  snp_position.txt | cut -f 1,3,4 > sorted_chr_${i}.txt
+# Iterate through chromosome 
 
-    # Join the sorted_chr{i}.txt with the transposed genotype file considering the common snp_id
-    join -t $'\t' -1 1 -2 1 sorted_chr_${i}.txt transposed_maize_genotypes.txt > joined_${i}.txt
+for i in {1..10}; do 
 
-    # Sort by position in increasing order 
-    (echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3n joined_${i}.txt) > chromosome_increasing${i}.txt
+awk -v chr="$i" '$3 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_${i}.txt
 
-    # Sort by position in decreasing order with '?' replaced by '-'
-    (echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3nr joined_${i}.txt | sed 's/?/-/g') > chromosome_decreasing${i}.txt
+join -t $'\t' -1 1 -2 1 sorted_chr_${i}.txt transposed_maize_genotypes.txt > joined_${i}.txt
+
+(echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3n joined_${i}.txt) > chromosome_increasing${i}.txt
+
+(echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3nr joined_${i}.txt | sed 's/?/-/g') > chromosome_decreasing${i}.txt
+
 done
 
-   #For multiple
-   awk -v chr='multiple' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_multiple.txt
+#For multiple
 
-   join -t $'\t' -1 1 -2 1 sorted_chr_multiple.txt transposed_maize_genotypes.txt > joined_multiple.txt
+awk -v chr='multiple' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_multiple.txt
 
-   (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_multiple.txt) > chromosome_multiple.txt
+join -t $'\t' -1 1 -2 1 sorted_chr_multiple.txt transposed_maize_genotypes.txt > joined_multiple.txt
 
-   #For unknown
-   awk -v chr='unknown' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_unknown.txt
+(cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_multiple.txt) > chromosome_multiple.txt
 
-   join -t $'\t' -1 1 -2 1 sorted_chr_unknown.txt transposed_maize_genotypes.txt > joined_unknown.txt
-
-   (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_unknown.txt) > chromosome_unknown.txt
-
-   # Clean up
-   rm sorted_chr*  joined*
+#For unknown
    
+awk -v chr='unknown' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_unknown.txt
+
+join -t $'\t' -1 1 -2 1 sorted_chr_unknown.txt transposed_maize_genotypes.txt > joined_unknown.txt
+
+(cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_unknown.txt) > chromosome_unknown.txt
+
+# Clean up
+
+rm sorted_chr* joined*
 
 ```
-
 Here is my brief description of what this code does
 
+1. SNP ID and SNP data from groups ZMMIL, ZMMLR and ZMMMR is extracted from fang_el_al_genotypes.txt file including the header, which is then sorted and transposed.
+
+2. Then creating a for loop in bash file, the snp_position.txt file is sorted based on the chromosome number from 1 to 10, along with retaining the columns 1,3 and 4. Then the transposed genotype file and the sorted snp files are joined. The joined file is then sorted by increasing order of the positions containing missing data encoded by ? and decreasing order of the positions containing missing data encoded by -. This creates 40 files in total, each with the header as SNP_ID in the first column, Chromosme in the second column, Position in the third column and Genotype in the subsequent columns.    
+
+3. For multiple and unknown data, two more separate files are created by sorting and joining the genotype file with the sorted snp file as described above.
 
 ###Teosinte Data
 
 ```
 Here is my snippet of code used for data processing
+
 awk 'NR==1 || /ZMP/' fang_et_al_genotypes.txt | cut -f 4-986 > teosinte_genotypes.txt
 
 awk -f transpose.awk teosinte_genotypes.txt > transposed_teosinte_genotypes.txt
@@ -97,38 +104,44 @@ awk -f transpose.awk teosinte_genotypes.txt > transposed_teosinte_genotypes.txt
 #!/bin/bash
 
 # Iterate through chromosome
+
 for i in {1..10}; do
-    # Sort the snp_position.txt file by chromosome and retain 1,3 and 4 column
-    awk -v chr="$i" '$3 == chr'  snp_position.txt | cut -f 1,3,4 > sorted_chr_${i}.txt
 
-    # Join the sorted_chr{i}.txt with the transposed genotype file considering the common snp_id
-    join -t $'\t' -1 1 -2 1 sorted_chr_${i}.txt transposed_teosinte_genotypes.txt > joined_${i}.txt
+awk -v chr="$i" '$3 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_${i}.txt
 
-    # Sort by position in increasing order 
-    (echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3n joined_${i}.txt) > chromosome_increasing${i}.txt
+join -t $'\t' -1 1 -2 1 sorted_chr_${i}.txt transposed_teosinte_genotypes.txt > joined_${i}.txt
 
-    # Sort by position in decreasing order with '?' replaced by '-'
-    (echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3nr joined_${i}.txt | sed 's/?/-/g') > chromosome_decreasing${i}.txt
+(echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3n joined_${i}.txt) > chromosome_increasing${i}.txt
+
+(echo -e "SNP_ID\tChromosome\tPosition\tGenotype" && sort -k3,3nr joined_${i}.txt | sed 's/?/-/g') > chromosome_decreasing${i}.txt
 
 done
 
-   #For multiple 
+#For multiple 
 
-   awk -v chr='multiple' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_multiple.txt
+awk -v chr='multiple' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_multiple.txt
 
-   join -t $'\t' -1 1 -2 1 sorted_chr_multiple.txt transposed_teosinte_genotypes.txt > joined_multiple.txt
+join -t $'\t' -1 1 -2 1 sorted_chr_multiple.txt transposed_teosinte_genotypes.txt > joined_multiple.txt
 
-   (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_multiple.txt) > chromosome_multiple.txt
+(cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_multiple.txt) > chromosome_multiple.txt
 
-   #For unknown
-   awk -v chr='unknown' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_unknown.txt
+#For unknown
 
-   join -t $'\t' -1 1 -2 1 sorted_chr_unknown.txt transposed_teosinte_genotypes.txt > joined_unknown.txt
+awk -v chr='unknown' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_unknown.txt
 
-   (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_unknown.txt) > chromosome_unknown.txt
+join -t $'\t' -1 1 -2 1 sorted_chr_unknown.txt transposed_teosinte_genotypes.txt > joined_unknown.txt
 
-   # Clean up
-   rm sorted_chr*  joined*
+(cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_unknown.txt) > chromosome_unknown.txt
+
+# Clean up
+
+rm sorted_chr* joined*
+
 ```
-
 Here is my brief description of what this code does
+
+1. SNP ID and SNP data from groups ZMPBA, ZMPIL and ZMPJA is extracted from fang_el_al_genotypes.txt file including the header, which is then sorted and transposed.
+
+2. Then creating a for loop in bash file, the snp_position.txt file is sorted based on the chromosome number from 1 to 10, along with retaining the columns 1,3 and 4. Then the transposed genotype file and the sorted snp files are joined. The joined file is then sorted by increasing order of the positions containing missing data encoded by ? and decreasing order of the positions containing missing data encoded by -. This creates 40 files in total, each with the header as SNP_ID in the first column, Chromosme in the second column, Position in the third column and Genotype in the subsequent columns.
+
+3. For multiple and unknown data, two more separate files are created by sorting and joining the genotype file with the sorted snp file as described above.
