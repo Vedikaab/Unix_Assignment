@@ -6,10 +6,12 @@
 
 ```
 here is my snippet of code used for data inspection
+
 wc fang_et_al_genotypes.txt
 ls -l fang_et_al_genotypes.txt
 awk -F "\t" '{print NF; exit}' fang_et_al_genotypes.txt
 du -h fang_et_al_genotypes.txt
+
 ```
 
 By inspecting this file I learned that:
@@ -22,7 +24,8 @@ By inspecting this file I learned that:
 ###Attributes of `snp_position.txt`
 
 ```
-here is my snippet of code used for data inspection
+Here is my snippet of code used for data inspection
+
 ```
 
 By inspecting this file I learned that:
@@ -31,11 +34,6 @@ By inspecting this file I learned that:
 2. point 2
 3. point 3
 
-or
-
-* point 1
-* point 2
-* point 3
 
 ##Data Processing
 
@@ -73,7 +71,8 @@ Here is my brief description of what this code does
 ###Teosinte Data
 
 ```
-here is my snippet of code used for data processing
+Here is my snippet of code used for data processing
+
 ```
 
 Here is my brief description of what this code does
