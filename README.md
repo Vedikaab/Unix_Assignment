@@ -43,6 +43,11 @@ or
 
 ```
 Here is my snippet of code used for data processing
+
+awk 'NR==1 || /ZMM/' fang_et_al_genotypes.txt | cut -f 4-986 > maize_genotypes.txt
+
+awk -f transpose.awk maize_genotypes.txt > transposed_maize_genotypes.txt
+
 #!/bin/bash
 
 # Iterate through chromosome
