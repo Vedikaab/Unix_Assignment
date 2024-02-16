@@ -34,4 +34,4 @@ done
    (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_unknown.txt) > chromosome_unknown.txt
 
    # Clean up
-   rm sorted_chr*  joined*
+   rm sorted_chr* joined*

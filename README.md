@@ -1,8 +1,8 @@
-#UNIX Assignment
+# UNIX Assignment
 
-##Data Inspection
+## Data Inspection
 
-###Attributes of `fang_et_al_genotypes`
+### Attributes of `fang_et_al_genotypes`
 
 ```
 Here is my snippet of code used for data inspection
@@ -19,7 +19,7 @@ By inspecting this file I learned that:
 3. The .txt file size is 6.7M
 
 
-###Attributes of `snp_position.txt`
+### Attributes of `snp_position.txt`
 
 ```
 Here is my snippet of code used for data inspection
@@ -36,9 +36,9 @@ By inspecting this file I learned that:
 3. The .txt file size is 49k. 
 
 
-##Data Processing
+## Data Processing
 
-###Maize Data
+### Maize Data
 
 ```
 Here is my snippet of code used for data processing
@@ -47,7 +47,7 @@ awk 'NR==1 || /ZMM/' fang_et_al_genotypes.txt | cut -f 4-986 > maize_genotypes.t
 
 awk -f transpose.awk maize_genotypes.txt > transposed_maize_genotypes.txt
 
-#!/bin/bash
+sh data_processing.sh
 
 # Iterate through chromosome 
 
@@ -63,7 +63,7 @@ join -t $'\t' -1 1 -2 1 sorted_chr_${i}.txt transposed_maize_genotypes.txt > joi
 
 done
 
-#For multiple
+# For multiple
 
 awk -v chr='multiple' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_multiple.txt
 
@@ -71,7 +71,7 @@ join -t $'\t' -1 1 -2 1 sorted_chr_multiple.txt transposed_maize_genotypes.txt >
 
 (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_multiple.txt) > chromosome_multiple.txt
 
-#For unknown
+# For unknown
    
 awk -v chr='unknown' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_unknown.txt
 
@@ -92,7 +92,7 @@ Here is my brief description of what this code does
 
 3. For multiple and unknown data, two more separate files are created by sorting and joining the genotype file with the sorted snp file as described above.
 
-###Teosinte Data
+### Teosinte Data
 
 ```
 Here is my snippet of code used for data processing
@@ -101,7 +101,7 @@ awk 'NR==1 || /ZMP/' fang_et_al_genotypes.txt | cut -f 4-986 > teosinte_genotype
 
 awk -f transpose.awk teosinte_genotypes.txt > transposed_teosinte_genotypes.txt
 
-#!/bin/bash
+sh data_processing.sh
 
 # Iterate through chromosome
 
@@ -117,7 +117,7 @@ join -t $'\t' -1 1 -2 1 sorted_chr_${i}.txt transposed_teosinte_genotypes.txt > 
 
 done
 
-#For multiple 
+# For multiple 
 
 awk -v chr='multiple' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_multiple.txt
 
@@ -125,7 +125,7 @@ join -t $'\t' -1 1 -2 1 sorted_chr_multiple.txt transposed_teosinte_genotypes.tx
 
 (cat <(echo -e "SNP_ID\tChromosome\tPosition\tGenotype") && cat joined_multiple.txt) > chromosome_multiple.txt
 
-#For unknown
+# For unknown
 
 awk -v chr='unknown' '$3 == chr|| $4 == chr' snp_position.txt | cut -f 1,3,4 > sorted_chr_unknown.txt
 
