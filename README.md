@@ -4,11 +4,12 @@
 
 ### Attributes of `fang_et_al_genotypes`
 
-```
 Here is my snippet of code used for data inspection
-
+```
 wc fang_et_al_genotypes.txt
+
 awk -F "\t" '{print NF; exit}' fang_et_al_genotypes.txt
+
 du -h fang_et_al_genotypes.txt
 
 ```
@@ -21,11 +22,12 @@ By inspecting this file I learned that:
 
 ### Attributes of `snp_position.txt`
 
-```
 Here is my snippet of code used for data inspection
-
+```
 wc snp_position.txt
+
 awk -F "\t" '{print NF; exit}' snp_position.txt
+
 du -h snp_position.txt
 
 ```
@@ -40,16 +42,17 @@ By inspecting this file I learned that:
 
 ### Maize Data
 
+Here is my snippet of code used for data processing
 ```
-**Here is my snippet of code used for data processing**
-
 awk 'NR==1 || /ZMM/' fang_et_al_genotypes.txt | cut -f 4-986 > maize_genotypes.txt
 
 awk -f transpose.awk maize_genotypes.txt > transposed_maize_genotypes.txt
 
 sh data_processing.sh
 
-**Here is the snippet of the slurm file**
+# Here is the snippet of the slurm file
+
+#!/bin/bash
 
 # Iterate through chromosome 
 
@@ -95,17 +98,17 @@ Here is my brief description of what this code does
 3. For multiple and unknown data, two more separate files are created by extracting and joining the genotype file with the extracted snp file as described above.
 
 ### Teosinte Data
-
+Here is my snippet of code used for data processing
 ```
-**Here is my snippet of code used for data processing**
-
 awk 'NR==1 || /ZMP/' fang_et_al_genotypes.txt | cut -f 4-986 > teosinte_genotypes.txt
 
 awk -f transpose.awk teosinte_genotypes.txt > transposed_teosinte_genotypes.txt
 
 sh data_processing.sh
 
-**Here is the snippet of the slurm file**
+# Here is the snippet of the slurm file
+
+#!/bin/bash
 
 # Iterate through chromosome
 
