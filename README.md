@@ -41,13 +41,15 @@ By inspecting this file I learned that:
 ### Maize Data
 
 ```
-Here is my snippet of code used for data processing
+**Here is my snippet of code used for data processing**
 
 awk 'NR==1 || /ZMM/' fang_et_al_genotypes.txt | cut -f 4-986 > maize_genotypes.txt
 
 awk -f transpose.awk maize_genotypes.txt > transposed_maize_genotypes.txt
 
 sh data_processing.sh
+
+**Here is the snippet of the slurm file**
 
 # Iterate through chromosome 
 
@@ -95,13 +97,15 @@ Here is my brief description of what this code does
 ### Teosinte Data
 
 ```
-Here is my snippet of code used for data processing
+**Here is my snippet of code used for data processing**
 
 awk 'NR==1 || /ZMP/' fang_et_al_genotypes.txt | cut -f 4-986 > teosinte_genotypes.txt
 
 awk -f transpose.awk teosinte_genotypes.txt > transposed_teosinte_genotypes.txt
 
 sh data_processing.sh
+
+**Here is the snippet of the slurm file**
 
 # Iterate through chromosome
 
