@@ -86,11 +86,11 @@ rm extracted_chr* joined*
 ```
 Here is my brief description of what this code does
 
-1. SNP ID and SNP data from groups ZMMIL, ZMMLR and ZMMMR is extracted from fang_el_al_genotypes.txt file including the header, which is then extracted and transposed.
+1. SNP ID and SNP data from groups ZMMIL, ZMMLR and ZMMMR is extracted from fang_el_al_genotypes.txt file including the header, which is then transposed.
 
-2. Then creating a for loop in bash file, the snp_position.txt file is extracted based on the chromosome number from 1 to 10, along with retaining the columns 1,3 and 4. Then the transposed genotype file and the extracted snp files are joined. The joined file is then extracted by increasing order of the positions containing missing data encoded by ? and decreasing order of the positions containing missing data encoded by -. This creates 40 files in total, each with the header as SNP_ID in the first column, Chromosme in the second column, Position in the third column and Genotype in the subsequent columns.    
+2. Then creating a for loop in bash file, the snp_position.txt file is extracted based on the chromosome number 1 to 10, along with retaining the columns 1,3 and 4. Then the transposed genotype file and the extracted snp files are joined. The joined file is then sorted  by increasing order of the positions containing missing data encoded by ? and decreasing order of the positions containing missing data encoded by -. This creates 40 files in total, each with the header as SNP_ID in the first column, Chromosme in the second column, Position in the third column and Genotype in the subsequent columns.    
 
-3. For multiple and unknown data, two more separate files are created by sorting and joining the genotype file with the extracted snp file as described above.
+3. For multiple and unknown data, two more separate files are created by extracting and joining the genotype file with the extracted snp file as described above.
 
 ### Teosinte Data
 
@@ -140,8 +140,8 @@ rm extracted_chr* joined*
 ```
 Here is my brief description of what this code does
 
-1. SNP ID and SNP data from groups ZMPBA, ZMPIL and ZMPJA is extracted from fang_el_al_genotypes.txt file including the header, which is then extracted and transposed.
+1. SNP ID and SNP data from groups ZMPBA, ZMPIL and ZMPJA is extracted from fang_el_al_genotypes.txt file including the header, which is then transposed.
 
-2. Then creating a for loop in bash file, the snp_position.txt file is extracted based on the chromosome number from 1 to 10, along with retaining the columns 1,3 and 4. Then the transposed genotype file and the extracted snp files are joined. The joined file is then extracted by increasing order of the positions containing missing data encoded by ? and decreasing order of the positions containing missing data encoded by -. This creates 40 files in total, each with the header as SNP_ID in the first column, Chromosme in the second column, Position in the third column and Genotype in the subsequent columns.
+2. Then creating a for loop in bash file, the snp_position.txt file is extracted based on the chromosome number 1 to 10, along with retaining the columns 1,3 and 4. Then the transposed genotype file and the extracted snp files are joined. The joined file is then sorted by increasing order of the positions containing missing data encoded by ? and decreasing order of the positions containing missing data encoded by -. This creates 40 files in total, each with the header as SNP_ID in the first column, Chromosme in the second column, Position in the third column and Genotype in the subsequent columns.
 
-3. For multiple and unknown data, two more separate files are created by sorting and joining the genotype file with the extracted snp file as described above.
+3. For multiple and unknown data, two more separate files are created by extracting and joining the genotype file with the extracted snp file as described above.
